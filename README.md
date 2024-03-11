@@ -4,7 +4,7 @@ See [the online changelog](https://github.com/REVrobotics/MAXSwerve-Java-Templat
 
 ## Description
 
-A template project for an FRC swerve drivetrain that uses REV MAXSwerve Modules.
+A sample project for an FRC swerve drivetrain that uses REV MAXSwerve Modules.
 
 Note that this is meant to be used with a drivetrain composed of four MAXSwerve Modules, each configured with two SPARKS MAX, a NEO as the driving motor, a NEO 550 as the turning motor, and a REV Through Bore Encoder as the absolute turning encoder.
 
