@@ -23,7 +23,7 @@ public class AutoMode {
         m_tasks.add(new ShooterTask(m_robotContainer));
         m_tasks.add(new WaitTask(1));
         m_tasks.add(new PivotToGroundTask(m_robotContainer));
-        m_tasks.add(new WaitTask(10));
+        //m_tasks.add(new WaitTask(10));
         m_tasks.add(new DriveForwardTask(m_robotContainer, 1, 0.4));
         m_tasks.add(new WaitTask(0.1));
         m_tasks.add(new DriveForwardTask(m_robotContainer, 1, -0.4));
