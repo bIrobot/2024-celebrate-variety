@@ -93,14 +93,13 @@ public class IngestSubsystem extends SubsystemBase{
 
     @Override
     public void periodic() {
-        System.out.println(getPivotAngleDegrees());
-        // if (getIngestHasNote() && m_currentPivotState == PivotState.GROUND && m_currentIngestState == IngestState.FORWARD) {
-        //     m_currentIngestState = IngestState.STOP;
-        //     m_currentPivotState = PivotState.STOW;
-        // }
+        if (getIngestHasNote() && m_currentPivotState == PivotState.GROUND && m_currentIngestState == IngestState.FORWARD) {
+            m_currentIngestState = IngestState.STOP;
+            m_currentPivotState = PivotState.STOW;
+        }
 
-        // setIngestMotor();
-        // setPivotAngle();
+        setIngestMotor();
+        setPivotAngle();
     }
 
     private void setIngestMotor() {
