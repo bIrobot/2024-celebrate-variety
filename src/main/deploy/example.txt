@@ -3,3 +3,5 @@ Files placed in this directory will be deployed to the RoboRIO into the
 to get a proper path relative to the deploy directory.
 
 This addition made to test Git Hub update.
+
+This is another addition to test Git.
