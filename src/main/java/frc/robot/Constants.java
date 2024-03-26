@@ -176,8 +176,8 @@ public final class Constants {
     public static final double k_pivotEncoderOffset = 0.166842; // Straight up, sketchy to reset to "up"
 
     // Pivot set point angles
-    public static final double k_pivotAngleGround = 122;
-    public static final double k_pivotAngleStow = 348;
+    public static final double k_pivotAngleGround = 121.7;
+    public static final double k_pivotAngleStow = 347.8;
   }
 
   public static final class ShooterConstants {
