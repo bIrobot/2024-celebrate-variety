@@ -45,7 +45,9 @@ public class RobotContainer {
             TX=LimelightHelpers.getTX("limelight");
             
             if (TA != 0) { 
-                lastTX=TX;
+                if (TX != 0) {
+                    lastTX=TX;
+                }
                 if (Math.abs(TX)<5) {
                     if (TA > 1) {
                         System.out.println("Stop " + TA);
