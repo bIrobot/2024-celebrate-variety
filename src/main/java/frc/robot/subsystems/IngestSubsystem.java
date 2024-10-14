@@ -87,7 +87,7 @@ public class IngestSubsystem extends SubsystemBase{
     }
 
     public boolean isPivotAtTarget() {
-        int deadzoneBuffer = 30;
+        int deadzoneBuffer = 40;
         return Math.abs(getPivotAngleDegrees() - pivotTargetToAngle()) < deadzoneBuffer;
     }
 
@@ -141,10 +141,10 @@ public class IngestSubsystem extends SubsystemBase{
 
         switch (m_currentPivotState) {
           case GROUND:
-            mPivotMotor.set(-.5);
+            mPivotMotor.set(-.6);
             break;
           case STOW:
-            mPivotMotor.set(.5);
+            mPivotMotor.set(.6);
             break;
           default:
             mPivotMotor.set(0.0);

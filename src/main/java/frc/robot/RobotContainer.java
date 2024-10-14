@@ -18,18 +18,60 @@ public class RobotContainer {
     public final IngestSubsystem ingestModule = new IngestSubsystem();
     public final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(ingestModule);
 
+    boolean seeking = false;
+    double lastTX;
+
     public RobotContainer() {
         configureSwerveDrive();
         CameraServer.startAutomaticCapture();
     }  
 
     public void teleopRunning() {
-        shouldLeftArmChangeState();
-        shouldRightArmChangeState();
-        shouldStartIngesting();
-        shouldStartShooting();
-        shouldStartIngestPulse();
-        shouldSetPivotAmp();
+
+        if (driverController.getStartButtonPressed()){
+            seeking = ! seeking;
+        }
+        if (! seeking) {
+            shouldLeftArmChangeState();
+            shouldRightArmChangeState();
+            shouldStartIngesting();
+            shouldStartShooting();
+            shouldStartIngestPulse();
+            shouldSetPivotAmp();
+        } else {
+            System.out.println(LimelightHelpers.getTA("limelight"));
+            double TA, TX;
+            TA=LimelightHelpers.getTA("limelight");
+            TX=LimelightHelpers.getTX("limelight");
+            
+            if (TA != 0) { 
+                lastTX=TX;
+                if (Math.abs(TX)<5) {
+                    if (TA > 1) {
+                        System.out.println("Stop " + TA);
+                        robotDrive.drive(0, 0, 0, false, true);
+                    } else {
+                        System.out.println("Go forward " + TA);
+                        robotDrive.drive(-0.1, 0, 0, false, true);
+                    }
+                } else if (TX<0) {
+                    System.out.println("Rotate left slow"); 
+                    robotDrive.drive(0, 0, 0.1, false, true);
+                } else {
+                    System.out.println("Right Slow");
+                    robotDrive.drive(0, 0, -0.1, false, true);
+                }
+            } else {
+                System.out.println("Dont see");
+                if (lastTX<0) {
+                    robotDrive.drive(0, 0, 0.2, false, true);
+                } else {
+                    robotDrive.drive(0, 0, -0.2, false, true);
+                }
+            }
+
+        }
+        
     }
         
     private void configureSwerveDrive() {

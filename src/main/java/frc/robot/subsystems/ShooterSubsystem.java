@@ -84,7 +84,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
                 m_timer.start();
 
-                if (m_timer.hasElapsed(3.5)) {
+                if (m_timer.hasElapsed(2)) {
                     m_ingestModule.reverseIngest();
                 }
                 break;

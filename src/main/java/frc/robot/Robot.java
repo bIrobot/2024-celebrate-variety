@@ -30,6 +30,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     m_autoRunner = new AutoMode(m_robotContainer);
+    LimelightHelpers.setLEDMode_ForceOn("");
+
   }
 
   /**
@@ -46,6 +48,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    //System.out.println("hello world!\n");
   }
 
   @Override
