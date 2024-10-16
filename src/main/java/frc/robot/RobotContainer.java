@@ -54,14 +54,14 @@ public class RobotContainer {
                         robotDrive.drive(0, 0, 0, false, true);
                     } else {
                         System.out.println("Go forward " + TA);
-                        robotDrive.drive(0.1, 0, 0, false, true);
+                        robotDrive.drive(0.1, 0, -TX/40, false, true);
                     }
                 } else if (TX<0) {
                     System.out.println("Rotate left slow"); 
-                    robotDrive.drive(0, 0, 0.1, false, true);
+                    robotDrive.drive(0.1, 0, 0.1, false, true);
                 } else {
                     System.out.println("Right Slow");
-                    robotDrive.drive(0, 0, -0.1, false, true);
+                    robotDrive.drive(0.1, 0, -0.1, false, true);
                 }
             } else {
                 System.out.println("Dont see");
