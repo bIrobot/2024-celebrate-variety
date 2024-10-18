@@ -19,7 +19,9 @@ public class RobotContainer {
     public final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(ingestModule);
 
     boolean seeking = false;
-    double lastTX;
+    double lastTX = 100;
+    double lastTY;
+    long when;
 
     public RobotContainer() {
         configureSwerveDrive();
@@ -28,8 +30,13 @@ public class RobotContainer {
 
     public void teleopRunning() {
 
-        if (driverController.getStartButtonPressed()){
+        if (driverController.getStartButtonPressed() || driverController.getBackButtonPressed()){
             seeking = ! seeking;
+            if (driverController.getBackButton()) {
+                lastTX = -100;
+            } else { 
+                lastTX = 100;
+            }
         }
         if (! seeking) {
             shouldLeftArmChangeState();
@@ -40,16 +47,21 @@ public class RobotContainer {
             shouldSetPivotAmp();
         } else {
             System.out.println(LimelightHelpers.getTA("limelight"));
-            double TA, TX;
+            double TA, TX, TY;
             TA=LimelightHelpers.getTA("limelight");
             TX=LimelightHelpers.getTX("limelight");
-            
+            TY=LimelightHelpers.getTY("limelight");
             if (TA != 0) { 
                 if (TX != 0) {
                     lastTX=TX;
+                    when = System.nanoTime();
+                }
+                if (TY != 0) {
+                    lastTY = TY;
+                    when = System.nanoTime();
                 }
                 if (Math.abs(TX)<5) {
-                    if (TA > 1) {
+                    if (TA > 5.3) {
                         System.out.println("Stop " + TA);
                         robotDrive.drive(0, 0, 0, false, true);
                     } else {
@@ -65,10 +77,18 @@ public class RobotContainer {
                 }
             } else {
                 System.out.println("Dont see");
-                if (lastTX<0) {
-                    robotDrive.drive(0, 0, 0.2, false, true);
+                if (Math.abs(lastTX)<5) {
+                    if (lastTY < 0 && System.nanoTime()-when < 2000000000) {
+                        System.out.println("Keep going");
+                    } else {
+                        robotDrive.drive(0, 0, 0, false, true);
+                    }
                 } else {
-                    robotDrive.drive(0, 0, -0.2, false, true);
+                    if (lastTX<0) {
+                        robotDrive.drive(0, 0, 0.2, false, true);
+                    } else {
+                        robotDrive.drive(0, 0, -0.2, false, true);
+                    }
                 }
             }
 
