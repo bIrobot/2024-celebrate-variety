@@ -6,12 +6,21 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.LimelightHelpers.RawDetection;
+import frc.robot.LimelightHelpers.RawFiducial;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IngestSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
+  
+    public enum TargetType  { 
+        AprilTags, 
+        Notes, 
+        Limelight
+    };
+
     public final XboxController driverController = new XboxController(OIConstants.kDriverControllerPort);
     public final DriveSubsystem robotDrive = new DriveSubsystem();
     public final ArmSubsystem leftArm = new ArmSubsystem(13);
@@ -19,6 +28,7 @@ public class RobotContainer {
     public final IngestSubsystem ingestModule = new IngestSubsystem();
     public final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(ingestModule);
 
+    TargetType targetType = TargetType.AprilTags; 
     boolean seeking = false;
     double lastTX = 100;
     double lastTY;
@@ -58,12 +68,54 @@ public class RobotContainer {
             shouldStartShooting();
             shouldStartIngestPulse();
             shouldSetPivotAmp();
+            RawFiducial[] fiducials =  LimelightHelpers.getRawFiducials("Limelight");
+            RawDetection[] detections = LimelightHelpers.getRawDetections("Limelight");
+            System.out.println("fiducials.length = " + fiducials.length);
+            System.out.println("detections.length = " + detections.length);
         } else {
-            System.out.println(LimelightHelpers.getTA("limelight"));
-            double TA, TX, TY;
-            TA=LimelightHelpers.getTA("limelight");
-            TX=LimelightHelpers.getTX("limelight");
-            TY=LimelightHelpers.getTY("limelight");
+            //System.out.println(LimelightHelpers.getTA("limelight"));
+            double TA = 0, TX = 0, TY = 0;
+            int lowestI = -1; 
+            double lowestTync = 100;
+            if (targetType ==  TargetType.AprilTags) {
+                RawFiducial[] fiducials =  LimelightHelpers.getRawFiducials("Limelight");
+                System.out.println("fiducials.length = " + fiducials.length);
+                for (int i = 0; i< fiducials.length; i++) {
+                    if (fiducials[i].tync < lowestTync) {
+                        lowestTync = fiducials[i].tync;
+                        lowestI = i;
+                    }
+                }
+                if (lowestI != -1) {
+                    System.out.println("Picking " + (lowestI + 1) + " of " + (fiducials.length));                
+                    TX = fiducials[lowestI].txnc;
+                    TY = fiducials[lowestI].tync;
+                    TA = fiducials[lowestI].ta;
+                } else {
+                    System.out.println("No fiducials");
+                }
+            } else if (targetType == TargetType.Notes) { 
+                RawDetection[] detections = LimelightHelpers.getRawDetections("Limelight");
+                System.out.println("detections.length = " + detections.length);
+                for (int i = 0; i< detections.length; i++) {
+                    if (detections[i].tync < lowestTync) {
+                        lowestTync = detections[i].tync;
+                        lowestI = i;
+                    }
+                }
+                if (lowestI != -1) {
+                    System.out.println("Picking " + (lowestI + 1) + " of " + (detections.length));
+                    TX = detections[lowestI].txnc;
+                    TY = detections[lowestI].tync;
+                    TA = detections[lowestI].ta;
+                } else {
+                    System.out.println("No detections");
+                }
+            } else {             
+                TA=LimelightHelpers.getTA("limelight");
+                TX=LimelightHelpers.getTX("limelight");
+                TY=LimelightHelpers.getTY("limelight");
+            }
             //if seeing target
             if (TA != 0) { 
                 // if seeing target x
