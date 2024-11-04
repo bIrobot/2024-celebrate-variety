@@ -1,0 +1,39 @@
+{
+  "Connections": {
+    "open": true
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "6098"
+  },
+  "transitory": {
+    "CameraPublisher": {
+      "limelight": {
+        "open": true
+      },
+      "open": true
+    },
+    "LiveWindow": {
+      ".status": {
+        "open": true
+      }
+    },
+    "Shuffleboard": {
+      ".metadata": {
+        "open": true
+      },
+      ".recording": {
+        "open": true
+      }
+    },
+    "SmartDashboard": {
+      "open": true
+    },
+    "limelight": {
+      "double[]##v_/limelight/rawfiducials": {
+        "open": true
+      },
+      "open": true
+    }
+  }
+}

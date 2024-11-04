@@ -68,8 +68,8 @@ public class RobotContainer {
             shouldStartShooting();
             shouldStartIngestPulse();
             shouldSetPivotAmp();
-            RawFiducial[] fiducials =  LimelightHelpers.getRawFiducials("Limelight");
-            RawDetection[] detections = LimelightHelpers.getRawDetections("Limelight");
+            RawFiducial[] fiducials =  LimelightHelpers.getRawFiducials("limelight");
+            RawDetection[] detections = LimelightHelpers.getRawDetections("limelight");
             System.out.println("fiducials.length = " + fiducials.length);
             System.out.println("detections.length = " + detections.length);
         } else {
@@ -78,7 +78,7 @@ public class RobotContainer {
             int lowestI = -1; 
             double lowestTync = 100;
             if (targetType ==  TargetType.AprilTags) {
-                RawFiducial[] fiducials =  LimelightHelpers.getRawFiducials("Limelight");
+                RawFiducial[] fiducials =  LimelightHelpers.getRawFiducials("limelight");
                 System.out.println("fiducials.length = " + fiducials.length);
                 for (int i = 0; i< fiducials.length; i++) {
                     if (fiducials[i].tync < lowestTync) {
@@ -95,7 +95,7 @@ public class RobotContainer {
                     System.out.println("No fiducials");
                 }
             } else if (targetType == TargetType.Notes) { 
-                RawDetection[] detections = LimelightHelpers.getRawDetections("Limelight");
+                RawDetection[] detections = LimelightHelpers.getRawDetections("limelight");
                 System.out.println("detections.length = " + detections.length);
                 for (int i = 0; i< detections.length; i++) {
                     if (detections[i].tync < lowestTync) {
@@ -130,7 +130,6 @@ public class RobotContainer {
                     lastTY = TY;
                     when = System.nanoTime();
                 }
-                
                 //if target is dead ahead
                 if (Math.abs(TX)<5) {
                     //if target is too close 
