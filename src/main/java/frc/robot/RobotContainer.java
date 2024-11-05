@@ -28,7 +28,7 @@ public class RobotContainer {
     public final IngestSubsystem ingestModule = new IngestSubsystem();
     public final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(ingestModule);
 
-    TargetType targetType = TargetType.AprilTags; 
+    TargetType targetType = TargetType.Limelight; 
     boolean seeking = false;
     double lastTX = 100;
     double lastTY;

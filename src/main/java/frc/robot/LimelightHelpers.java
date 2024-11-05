@@ -634,7 +634,7 @@ public class LimelightHelpers {
     public static RawDetection[] getRawDetections(String limelightName) {
         var entry = LimelightHelpers.getLimelightNTTableEntry(limelightName, "rawdetections");
         var rawDetectionArray = entry.getDoubleArray(new double[0]);
-        int valsPerEntry = 11;
+        int valsPerEntry = 12;
         if (rawDetectionArray.length % valsPerEntry != 0) {
             return new RawDetection[0];
         }
