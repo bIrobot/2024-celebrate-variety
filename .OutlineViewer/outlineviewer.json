@@ -30,6 +30,9 @@
       "open": true
     },
     "limelight": {
+      "double[]##v_/limelight/rawdetections": {
+        "open": true
+      },
       "double[]##v_/limelight/rawfiducials": {
         "open": true
       },

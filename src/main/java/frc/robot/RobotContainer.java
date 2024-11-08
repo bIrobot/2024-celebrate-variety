@@ -68,10 +68,6 @@ public class RobotContainer {
             shouldStartShooting();
             shouldStartIngestPulse();
             shouldSetPivotAmp();
-            RawFiducial[] fiducials =  LimelightHelpers.getRawFiducials("limelight");
-            RawDetection[] detections = LimelightHelpers.getRawDetections("limelight");
-            System.out.println("fiducials.length = " + fiducials.length);
-            System.out.println("detections.length = " + detections.length);
         } else {
             //System.out.println(LimelightHelpers.getTA("limelight"));
             double TA = 0, TX = 0, TY = 0;
