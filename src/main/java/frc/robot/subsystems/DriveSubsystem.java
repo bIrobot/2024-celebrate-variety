@@ -15,6 +15,7 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -164,11 +165,14 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
   public ChassisSpeeds getSpeeds() {
-    // TODO
+    return Constants.DriveConstants.kDriveKinematics.toChassisSpeeds(
+      m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState()
+    );
   }
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    // TODO
+    drive(robotRelativeSpeeds.vxMetersPerSecond, robotRelativeSpeeds.vyMetersPerSecond, robotRelativeSpeeds.omegaRadiansPerSecond,
+    false, false);
   }
 
 
