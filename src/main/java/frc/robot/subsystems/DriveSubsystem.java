@@ -94,8 +94,8 @@ public class DriveSubsystem extends SubsystemBase {
         this::getSpeeds, 
         this::driveRobotRelative, 
         new PPHolonomicDriveController(
-          Constants.Swerve.translationConstants,
-          Constants.Swerve.rotationConstants
+          Constants.DriveConstants.translationConstants,
+          Constants.DriveConstants.rotationConstants
         ),
         config,
         () -> {

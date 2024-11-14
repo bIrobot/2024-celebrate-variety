@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import com.pathplanner.lib.config.PIDConstants;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -28,6 +29,9 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static final class DriveConstants {
+    public static final PIDConstants translationConstants = new PIDConstants(5.0, 0.0, 0.0);
+    public static final PIDConstants rotationConstants = new PIDConstants(5.0, 0.0, 0.0);
+
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;
