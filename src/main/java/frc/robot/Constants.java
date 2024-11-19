@@ -13,7 +13,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import com.pathplanner.lib.config.PIDConstants;
+
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -36,6 +39,16 @@ public final class Constants {
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
+
+    public static final Translation2d flModuleOffset = new Translation2d(0.4, 0.4);
+
+    public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+      new PIDConstants(5.0, 0, 0), // Translation constants 
+      new PIDConstants(5.0, 0, 0), // Rotation constants 
+      kMaxSpeedMetersPerSecond, 
+      flModuleOffset.getNorm(), // Drive base radius (distance from center to furthest module) 
+      new ReplanningConfig()
+    );
 
     public static final double kDirectionSlewRate = 1.2; // radians per second
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)

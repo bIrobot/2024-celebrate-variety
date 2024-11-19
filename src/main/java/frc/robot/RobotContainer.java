@@ -3,20 +3,21 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IngestSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+//import com.pathplanner.lib.auto.AutoBuilder;
+//import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.events.EventTrigger;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.Waypoint;
+//import com.pathplanner.lib.events.EventTrigger;
+//import com.pathplanner.lib.path.GoalEndState;
+//import com.pathplanner.lib.path.PathConstraints;
+//import com.pathplanner.lib.path.PathPlannerPath;
+//import com.pathplanner.lib.path.Waypoint;
 
 public class RobotContainer {
     public final XboxController driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -30,6 +31,10 @@ public class RobotContainer {
         configureSwerveDrive();
         CameraServer.startAutomaticCapture();
     }  
+
+    public Command getAutonomousCommand() {
+        return new PathPlannerAuto("MyAuto1");
+    }
 
     public void teleopRunning() {
         shouldLeftArmChangeState();

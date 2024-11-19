@@ -1,21 +1,21 @@
 package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.events.EventTrigger;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.Waypoint;
-import com.pathplanner.lib.util.PathPlannerLogging;
+//import com.pathplanner.lib.auto.NamedCommands;
+//import com.pathplanner.lib.commands.PathPlannerAuto;
+//import com.pathplanner.lib.util.RobotConfig;
+//import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+//import com.pathplanner.lib.events.EventTrigger;
+//import com.pathplanner.lib.path.GoalEndState;
+//import com.pathplanner.lib.path.PathConstraints;
+//import com.pathplanner.lib.path.PathPlannerPath;
+//import com.pathplanner.lib.path.Waypoint;
+//import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+//import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -85,19 +85,14 @@ public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() { 
     try{
-      RobotConfig config = RobotConfig.fromGUISettings();
-
       // Configure AutoBuilder
-      AutoBuilder.configure(
+      // XXX -- for 2025 we need RobotConfig and we will call "configure" instead of "configureHolonomic"
+      AutoBuilder.configureHolonomic(
         this::getPose, 
         this::resetOdometry, 
         this::getSpeeds, 
         this::driveRobotRelative, 
-        new PPHolonomicDriveController(
-          Constants.DriveConstants.translationConstants,
-          Constants.DriveConstants.rotationConstants
-        ),
-        config,
+        Constants.DriveConstants.pathFollowerConfig,
         () -> {
             // Boolean supplier that controls when the path will be mirrored for the red alliance
             // This will flip the path being followed to the red side of the field.
