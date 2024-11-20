@@ -50,35 +50,41 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-      m_autoRunner.autoInit();
-      m_currentTask = m_autoRunner.getNextTask();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-      // Start the first task
-      if (m_currentTask != null) {
-          m_currentTask.start();
-      }
+    if (m_autonomousCommand != null) {
+      System.out.println("WE HAVE A PATH!!!");
+      m_autonomousCommand.schedule();
+    }
+      // m_autoRunner.autoInit();
+      // m_currentTask = m_autoRunner.getNextTask();
+
+      // // Start the first task
+      // if (m_currentTask != null) {
+      //     m_currentTask.start();
+      // }
   }
 
   @Override
   public void autonomousPeriodic() {
-      if (m_currentTask == null) {
-        return;
-      }
+      // if (m_currentTask == null) {
+      //   return;
+      // }
 
-      m_currentTask.update();
+      // m_currentTask.update();
 
-      if (!m_currentTask.isFinished()) {
-        return;
-      }
+      // if (!m_currentTask.isFinished()) {
+      //   return;
+      // }
 
-      // If the current task is finished, get the next task
-      m_currentTask.done();
-      m_currentTask = m_autoRunner.getNextTask();
+      // // If the current task is finished, get the next task
+      // m_currentTask.done();
+      // m_currentTask = m_autoRunner.getNextTask();
 
-      // Start the next task
-      if (m_currentTask != null) {
-        m_currentTask.start();
-      }
+      // // Start the next task
+      // if (m_currentTask != null) {
+      //   m_currentTask.start();
+      // }
   }
 
   @Override
