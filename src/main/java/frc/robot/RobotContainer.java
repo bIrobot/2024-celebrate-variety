@@ -2,6 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -43,7 +46,23 @@ public class RobotContainer {
         shouldStartShooting();
         shouldStartIngestPulse();
         shouldSetPivotAmp();
+
+        if (driverController.getBackButtonPressed()) {
+            System.out.println("RESET POSE");
+            robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+        }
+
+        if (driverController.getStartButtonPressed()) {
+            Pose2d pose = robotDrive.getPose();
+            System.out.println("POSE = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
+            ChassisSpeeds speeds = robotDrive.getSpeeds();
+            System.out.println("SPEEDS = " + speeds.vxMetersPerSecond + " " +
+                                             speeds.vyMetersPerSecond + " " +
+                                             speeds.omegaRadiansPerSecond);
+            System.out.println("GYRO = " + robotDrive.getHeading());
+        }
     }
+
         
     private void configureSwerveDrive() {
             // Configure default commands
