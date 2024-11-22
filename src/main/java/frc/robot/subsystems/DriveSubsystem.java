@@ -70,7 +70,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(m_gyro.getAngle()),
+      Rotation2d.fromDegrees(m_gyro.getAngle() * (DriveConstants.kGyroReversed ? -1.0 : 1.0)),
 
       //bIrobot Note: IMUAxis.kz was NOT in the parens above in the 2023 code
       //end note
@@ -113,10 +113,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Gyro angle", m_gyro.getAngle());
+    SmartDashboard.putNumber("Gyro angle", m_gyro.getAngle() * (DriveConstants.kGyroReversed ? -1.0 : 1.0));
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(m_gyro.getAngle() * (DriveConstants.kGyroReversed ? -1.0 : 1.0)),
 
         //bIrobot Note: IMUAxis.kz was NOT in the parens above in the 2023 code
         //end note
@@ -145,7 +145,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(m_gyro.getAngle() * (DriveConstants.kGyroReversed ? -1.0 : 1.0)),
 
         //bIrobot Note: IMUAxis.kz was NOT in the parens above in the 2023 code
         //end note
@@ -167,8 +167,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
     System.out.println("Following Path " + robotRelativeSpeeds.vxMetersPerSecond + " " + robotRelativeSpeeds.vyMetersPerSecond + " " + robotRelativeSpeeds.omegaRadiansPerSecond);
-    drive(robotRelativeSpeeds.vxMetersPerSecond, robotRelativeSpeeds.vyMetersPerSecond, robotRelativeSpeeds.omegaRadiansPerSecond,
-    false, true);
+    drive(robotRelativeSpeeds.vxMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond,
+          robotRelativeSpeeds.vyMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond,
+          robotRelativeSpeeds.omegaRadiansPerSecond/3.14159,
+          false, true);
   }
 
 
@@ -242,7 +244,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(m_gyro.getAngle()))
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(m_gyro.getAngle() * (DriveConstants.kGyroReversed ? -1.0 : 1.0)))
 
         //bIrobot Note: IMUAxis.kz was NOT in the parens above in the 2023 code
         //end note
@@ -299,7 +301,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+    return Rotation2d.fromDegrees(m_gyro.getAngle() * (DriveConstants.kGyroReversed ? -1.0 : 1.0)).getDegrees();
 
         //bIrobot Note: IMUAxis.kz was NOT in the parens above in the 2023 code
         //end note
