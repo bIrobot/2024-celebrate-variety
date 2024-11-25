@@ -6,6 +6,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.OIConstants;
@@ -21,6 +23,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 //import com.pathplanner.lib.path.PathConstraints;
 //import com.pathplanner.lib.path.PathPlannerPath;
 //import com.pathplanner.lib.path.Waypoint;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 public class RobotContainer {
     public final XboxController driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -30,10 +33,28 @@ public class RobotContainer {
     public final IngestSubsystem ingestModule = new IngestSubsystem();
     public final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(ingestModule);
 
+    private final Field2d field; 
+
+
     public RobotContainer() {
         configureSwerveDrive();
         CameraServer.startAutomaticCapture();
+
+        PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+            System.out.println("CURRENT = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
+        });
+
+        PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+            System.out.println("TARGET = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
+        });
+       
+        field = new Field2d(); 
+        SmartDashboard.putData("Field2", field);
+        PathPlannerLogging.setLogActivePathCallback((poses) -> {
+            field.getObject("path2").setPoses(poses);
+        });
     }  
+
 
     public Command getAutonomousCommand() {
         return new PathPlannerAuto("TestY");
