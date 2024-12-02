@@ -135,7 +135,9 @@ public class DriveSubsystem extends SubsystemBase {
     * @return The pose.
     */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    Pose2d pose = m_odometry.getPoseMeters();
+    System.out.println("GETPOSE " + pose.getX() + " " + pose.getY() + " " + pose.getRotation().getDegrees());
+    return pose;
   }
   
   /**
@@ -169,7 +171,7 @@ public class DriveSubsystem extends SubsystemBase {
     System.out.println("Following Path " + robotRelativeSpeeds.vxMetersPerSecond + " " + robotRelativeSpeeds.vyMetersPerSecond + " " + robotRelativeSpeeds.omegaRadiansPerSecond);
     drive(robotRelativeSpeeds.vxMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond,
           robotRelativeSpeeds.vyMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond,
-          robotRelativeSpeeds.omegaRadiansPerSecond/3.14159,
+          robotRelativeSpeeds.omegaRadiansPerSecond/Constants.DriveConstants.kMaxAngularSpeed,
           false, true);
   }
 
@@ -188,6 +190,8 @@ public class DriveSubsystem extends SubsystemBase {
     
     double xSpeedCommanded;
     double ySpeedCommanded;
+
+    //System.out.println("DRIVE " + xSpeed + " " + ySpeed + " " + rot);
 
     if (rateLimit) {
       // Convert XY to polar for rate limiting

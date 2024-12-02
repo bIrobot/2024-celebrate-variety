@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -21,6 +22,13 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private Task m_currentTask;
   private AutoMode m_autoRunner;
+
+  private boolean m_tele;
+  private long m_nanoTime;
+  private int m_prints = 0;
+  private double m_initX;
+  private double m_initY;
+  private double m_initRot;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -46,6 +54,13 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    if (m_tele && m_prints < 10 && System.nanoTime() - m_nanoTime > 1000000000L) {
+      Pose2d pose = m_robotContainer.robotDrive.getPose();
+      System.out.println("GETPOSE2 " + (pose.getX()-m_initX) + " " + (pose.getY()-m_initY) + " " + (pose.getRotation().getDegrees()-m_initRot));
+      m_nanoTime = System.nanoTime();
+      m_prints++;
+    }
   }
 
   @Override
@@ -53,7 +68,7 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
-      System.out.println("WE HAVE A PATH!!!");
+      System.out.println("WE HAVE A Command!!!");
       m_autonomousCommand.schedule();
     }
       // m_autoRunner.autoInit();
@@ -96,6 +111,14 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    m_nanoTime = System.nanoTime();
+    m_tele = true;
+
+    Pose2d pose = m_robotContainer.robotDrive.getPose();
+    m_initX = pose.getX();
+    m_initY = pose.getY();
+    m_initRot = pose.getRotation().getDegrees();
   }
 
   /** This function is called periodically during operator control. */
