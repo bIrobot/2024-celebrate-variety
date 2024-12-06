@@ -99,10 +99,16 @@ public class DriveSubsystem extends SubsystemBase {
             // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
             var alliance = DriverStation.getAlliance();
+            boolean alliancered;
             if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
+                alliancered = alliance.get() == DriverStation.Alliance.Red;
+            } else {
+              alliancered = false;
             }
-            return false;
+            System.out.println("FORCING ALLIANCE TO BLUE!");  // XXX -- get this from smart dashboard
+            alliancered = false;
+            System.out.println("alliancered = " + alliancered);
+            return alliancered;
         },
         this
       );
@@ -136,7 +142,7 @@ public class DriveSubsystem extends SubsystemBase {
     */
   public Pose2d getPose() {
     Pose2d pose = m_odometry.getPoseMeters();
-    System.out.println("GETPOSE " + pose.getX() + " " + pose.getY() + " " + pose.getRotation().getDegrees());
+    //System.out.println("GETPOSE " + pose.getX() + " " + pose.getY() + " " + pose.getRotation().getDegrees());
     return pose;
   }
   
@@ -168,7 +174,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    System.out.println("Following Path " + robotRelativeSpeeds.vxMetersPerSecond + " " + robotRelativeSpeeds.vyMetersPerSecond + " " + robotRelativeSpeeds.omegaRadiansPerSecond);
+    //System.out.println("Following Path " + robotRelativeSpeeds.vxMetersPerSecond + " " + robotRelativeSpeeds.vyMetersPerSecond + " " + robotRelativeSpeeds.omegaRadiansPerSecond);
     drive(robotRelativeSpeeds.vxMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond,
           robotRelativeSpeeds.vyMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond,
           robotRelativeSpeeds.omegaRadiansPerSecond/Constants.DriveConstants.kMaxAngularSpeed,

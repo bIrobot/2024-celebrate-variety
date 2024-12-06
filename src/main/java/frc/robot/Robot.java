@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    if (m_tele && m_prints < 10 && System.nanoTime() - m_nanoTime > 1000000000L) {
+    if (m_tele && m_prints < 10 && System.nanoTime() - m_nanoTime > 100000000L) {
       Pose2d pose = m_robotContainer.robotDrive.getPose();
       System.out.println("GETPOSE2 " + (pose.getX()-m_initX) + " " + (pose.getY()-m_initY) + " " + (pose.getRotation().getDegrees()-m_initRot));
       m_nanoTime = System.nanoTime();
@@ -65,12 +65,24 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    System.out.println("AUTONOMOUS INIT!!!");
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
       System.out.println("WE HAVE A Command!!!");
       m_autonomousCommand.schedule();
     }
+
+    Pose2d pose = m_robotContainer.robotDrive.getPose();
+    System.out.println("GETPOSE3 " + (pose.getX()-m_initX) + " " + (pose.getY()-m_initY) + " " + (pose.getRotation().getDegrees()-m_initRot));
+
+    m_nanoTime = System.nanoTime();
+    m_tele = true;
+
+    m_initX = pose.getX();
+    m_initY = pose.getY();
+    m_initRot = pose.getRotation().getDegrees();
+
       // m_autoRunner.autoInit();
       // m_currentTask = m_autoRunner.getNextTask();
 
@@ -112,13 +124,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_nanoTime = System.nanoTime();
-    m_tele = true;
-
-    Pose2d pose = m_robotContainer.robotDrive.getPose();
-    m_initX = pose.getX();
-    m_initY = pose.getY();
-    m_initRot = pose.getRotation().getDegrees();
   }
 
   /** This function is called periodically during operator control. */

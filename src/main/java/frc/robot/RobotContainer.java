@@ -47,11 +47,11 @@ public class RobotContainer {
         CameraServer.startAutomaticCapture();
 
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
-            System.out.println("CURRENT = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
+            //System.out.println("CURRENT = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
         });
 
         PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
-            System.out.println("TARGET = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
+            //System.out.println("TARGET = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
         });
        
         field = new Field2d(); 
@@ -83,18 +83,18 @@ public class RobotContainer {
         shouldSetPivotAmp();
 
         if (driverController.getBackButtonPressed()) {
-            System.out.println("RESET POSE");
+            //System.out.println("RESET POSE");
             robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
         }
 
         if (driverController.getStartButtonPressed()) {
             Pose2d pose = robotDrive.getPose();
-            System.out.println("POSE = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
+            //System.out.println("POSE = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
             ChassisSpeeds speeds = robotDrive.getSpeeds();
-            System.out.println("SPEEDS = " + speeds.vxMetersPerSecond + " " +
-                                             speeds.vyMetersPerSecond + " " +
-                                             speeds.omegaRadiansPerSecond);
-            System.out.println("GYRO = " + robotDrive.getHeading());
+            //System.out.println("SPEEDS = " + speeds.vxMetersPerSecond + " " +
+            //                                 speeds.vyMetersPerSecond + " " +
+            //                                 speeds.omegaRadiansPerSecond);
+            //System.out.println("GYRO = " + robotDrive.getHeading());
         }
     }
 
