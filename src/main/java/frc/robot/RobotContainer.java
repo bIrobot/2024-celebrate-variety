@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.OIConstants;
@@ -18,6 +19,7 @@ import frc.robot.subsystems.IngestSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 //import com.pathplanner.lib.auto.AutoBuilder;
 //import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -40,11 +42,14 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser;
 
-
+     public Command getlowerarmCommand() {
+        return Commands.run(() -> shooterSubsystem.startShooting(), shooterSubsystem); 
+    }
 
     public RobotContainer() {
         configureSwerveDrive();
         CameraServer.startAutomaticCapture();
+        NamedCommands.registerCommand("lowerarm", getlowerarmCommand());
 
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
             //System.out.println("CURRENT = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());

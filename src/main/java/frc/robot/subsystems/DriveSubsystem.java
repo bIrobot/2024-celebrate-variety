@@ -105,8 +105,8 @@ public class DriveSubsystem extends SubsystemBase {
             } else {
               alliancered = false;
             }
-            System.out.println("FORCING ALLIANCE TO BLUE!");  // XXX -- get this from smart dashboard
-            alliancered = false;
+           // System.out.println("FORCING ALLIANCE TO BLUE!");  // XXX -- get this from smart dashboard
+            //alliancered = false;
             System.out.println("alliancered = " + alliancered);
             return alliancered;
         },
