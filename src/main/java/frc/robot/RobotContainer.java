@@ -42,14 +42,14 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser;
 
-     public Command getlowerarmCommand() {
-        return Commands.run(() -> shooterSubsystem.startShooting(), shooterSubsystem); 
-    }
+    //public Command getlowerarmCommand() {
+    //    return Commands.runOnce(() -> shooterSubsystem.startShooting(), shooterSubsystem); 
+    //}
 
     public RobotContainer() {
         configureSwerveDrive();
         CameraServer.startAutomaticCapture();
-        NamedCommands.registerCommand("lowerarm", getlowerarmCommand());
+        //NamedCommands.registerCommand("lowerarm", getlowerarmCommand());
 
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
             //System.out.println("CURRENT = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
