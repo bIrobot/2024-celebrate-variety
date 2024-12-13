@@ -44,17 +44,28 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public Command getlowerarmCommand() {
-       return new FunctionalCommand (() -> {},
-                                 () -> ingestModule.startIngesting(),
-                                 (interrupted) -> {},
-                                 () -> { return ingestModule.getIngestHasNote(); },
-                                 ingestModule); 
+       return new FunctionalCommand (() -> {},  // onInit
+                                     () -> ingestModule.startIngesting(),  // onExecute
+                                     (interrupted) -> {},  // onEnd
+                                     () -> { return ingestModule.getIngestHasNote(); },  // isFinished
+                                     ingestModule);                                  
+    }
+
+    public Command getshootCommand() {
+       return new FunctionalCommand (() -> shooterSubsystem.startShooting(),  // onInit
+                                     () -> {},  // onExecute
+                                     (interrupted) -> {},  // onEnd
+                                     () -> false,  // isFinished
+                                     shooterSubsystem).
+                                     withTimeout(5).
+                                     andThen(Commands.runOnce(() -> shooterSubsystem.stopShooting())); 
     }
 
     public RobotContainer() {
         configureSwerveDrive();
         CameraServer.startAutomaticCapture();
         NamedCommands.registerCommand("lowerarm", getlowerarmCommand());
+        NamedCommands.registerCommand(("shoot"), getshootCommand());
 
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
             //System.out.println("CURRENT = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
