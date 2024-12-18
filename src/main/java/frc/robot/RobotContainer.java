@@ -51,6 +51,14 @@ public class RobotContainer {
                                      ingestModule);                                  
     }
 
+    public Command getallstopCommand() {
+       return new FunctionalCommand (() -> { robotDrive.drive(0, 0, 0, false, false); },  // onInit
+                                     () -> {},  // onExecute
+                                     (interrupted) -> {},  // onEnd
+                                     () -> { return true; },  // isFinished
+                                     robotDrive);                                  
+    }    
+
     public Command getshootCommand() {
        return new FunctionalCommand (() -> shooterSubsystem.startShooting(),  // onInit
                                      () -> {},  // onExecute
@@ -66,6 +74,7 @@ public class RobotContainer {
         CameraServer.startAutomaticCapture();
         NamedCommands.registerCommand("lowerarm", getlowerarmCommand());
         NamedCommands.registerCommand(("shoot"), getshootCommand());
+        NamedCommands.registerCommand(("allstop"), getallstopCommand());
 
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
             //System.out.println("CURRENT = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
