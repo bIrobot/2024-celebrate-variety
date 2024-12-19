@@ -95,11 +95,11 @@ public class RobotContainer {
             //is target on left
             } else if (TX<0) {
                 System.out.println("Rotate left slow"); 
-                robotDrive.drive(0.2, 0, 0.1, false, true);
+                robotDrive.drive(0.2, 0, (Math.abs(TX)<10)?0.1:0.1, false, true);
             // target is on right
             } else {
                 System.out.println("Right right slow");
-                robotDrive.drive(0.2, 0, -0.1, false, true);
+                robotDrive.drive(0.2, 0, (Math.abs(TX)<5)?-0.1:-0.1, false, true);
             }
         } else {
                 System.out.println("NOT SEEN");
