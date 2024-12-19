@@ -18,6 +18,9 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IngestSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.LimelightHelpers.RawDetection;
+import frc.robot.LimelightHelpers.RawFiducial;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -48,7 +51,7 @@ public class RobotContainer {
                                      () -> ingestModule.startIngesting(),  // onExecute
                                      (interrupted) -> {},  // onEnd
                                      () -> { return ingestModule.getIngestHasNote(); },  // isFinished
-                                     ingestModule);                                  
+                                     ingestModule);
     }
 
     public Command getallstopCommand() {
@@ -69,12 +72,55 @@ public class RobotContainer {
                                      andThen(Commands.runOnce(() -> shooterSubsystem.stopShooting())); 
     }
 
+    public void findNoteExecute()
+    {
+        double TA = LimelightHelpers.getTA("limelight");
+        double TX = LimelightHelpers.getTX("limelight");
+        double TY = LimelightHelpers.getTY("limelight");
+
+        ingestModule.startIngesting(); // is this needed?
+
+        //if seeing target
+        if (TA != 0) { 
+            //if target is dead ahead
+            if (Math.abs(TX)<5) {
+                //if target is too close 
+                if (TA > 5.3) {
+                    System.out.println("Stop " + TA);
+                    robotDrive.drive(0, 0, 0, false, true);
+                } else {
+                    System.out.println("Go forward " + TA);
+                    robotDrive.drive(0.2, 0, -TX/40, false, true);
+                }
+            //is target on left
+            } else if (TX<0) {
+                System.out.println("Rotate left slow"); 
+                robotDrive.drive(0.2, 0, 0.1, false, true);
+            // target is on right
+            } else {
+                System.out.println("Right right slow");
+                robotDrive.drive(0.2, 0, -0.1, false, true);
+            }
+        } else {
+                System.out.println("NOT SEEN");
+        }
+    }
+
+    public Command getfindNoteCommand() {
+    return new FunctionalCommand (() -> {},  // onInit
+                                    () -> findNoteExecute(),  // onExecute
+                                    (interrupted) -> {},  // onEnd
+                                    () -> { return ingestModule.getIngestHasNote(); },  // isFinished
+                                    ingestModule, robotDrive);                                  
+    }
+
     public RobotContainer() {
         configureSwerveDrive();
         CameraServer.startAutomaticCapture();
         NamedCommands.registerCommand("lowerarm", getlowerarmCommand());
         NamedCommands.registerCommand(("shoot"), getshootCommand());
         NamedCommands.registerCommand(("allstop"), getallstopCommand());
+         NamedCommands.registerCommand(("findnote"), getfindNoteCommand());
 
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
             //System.out.println("CURRENT = " + pose.getX() + " " + pose.getY() + " " + pose.getRotation());
